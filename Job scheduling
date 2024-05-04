@@ -1,0 +1,66 @@
+def job_sequencing(job):
+    n = len(job)
+    timeslot = [-1] * n
+
+    selection_sort_job(job)
+
+    for i in range(n):
+        deadline = job[i][1]
+        for j in range(min(deadline, n) - 1, -1, -1):
+            if timeslot[j] == -1:
+                timeslot[j] = i
+                break
+
+    schedule = [job[i] for i in timeslot if i != -1]
+    return schedule
+
+def selection_sort_job(job):
+    n = len(job)
+    for i in range(n - 1):
+        min_index = i
+        for j in range(i + 1, n):
+            if job[min_index][0] < job[j][0]:
+                min_index = j
+        job[min_index], job[i] = job[i], job[min_index]
+
+def selection_sort_int(arr):
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+
+def menu():
+    print("Menu:")
+    print("1. Job Sequencing")
+    print("2. Selection Sort")
+    print("3. Exit")
+
+def job_sequence_menu():
+    num_jobs = int(input("Enter the number of jobs: "))
+    job = []
+    for i in range(num_jobs):
+        profit, deadline = map(int, input(f"Enter profit and deadline for job {i+1}: ").split())
+        job.append((profit, deadline))
+    print("\nResult:", job_sequencing(job))
+
+def selection_sort_menu():
+    input_list = list(map(int, input("Enter elements separated by space: ").split()))
+    selection_sort_int(input_list)
+    print("Sorted array:", input_list)
+
+# Main program
+while True:
+    menu()
+    choice = int(input("Enter your choice: "))
+    if choice == 1:
+        job_sequence_menu()
+    elif choice == 2:
+        selection_sort_menu()
+    elif choice == 3:
+        print("Exiting...")
+        break
+    else:
+        print("Invalid choice. Please enter a valid option.")
